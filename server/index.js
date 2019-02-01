@@ -47,7 +47,6 @@ app.delete('/delete/:email/:password', async (request, response) => {
     } return response.json({ msg: 'Error deleting user' })
 })
 
-
 // Route for user to edit their password
 app.patch('/edit-password/:email/:password/:newPassword', async (request, response) => {
     const { email, password, newPassword } = request.params
@@ -63,28 +62,19 @@ app.patch('/edit-password/:email/:password/:newPassword', async (request, respon
     } return response.json( {msg: 'Error updating password'} )
 })
 
+// Route to get books by collectionID
+app.get('/:collectionID', async (request, response) => {
+    const { collectionID } = request.params
+    try {
+        const booksCollection = await db.getBooksFromCollection(collectionID)
+        if (booksCollection) {
+            return response.json({ booksCollection })
+        } else {
+            return response.json({ mgs: `No books found in collection for ID# ${collectionID}.` })
+        }
+    } catch (error) {log('Error retrieving bookc collection', error)}
+})
 
-
-// // Route for user to check their collection id, return none if they don't have one, also only return id number if their username and password match 
-// app.get('/cid/:email/:password', async (request, response) => {
-//     try {
-//         const user = await checkUser(request.params.email, request.params.password)
-//         if (user) {
-//             // 
-//         }
-//     } catch(error) {log('Error checking user collection id', error)}
-// })
-
-// app.get('/user-status/:email/:password', async (request, response) => {
-//     const user = await checkUser(request.params.email, request.params.password)
-//     return response.json({ user })
-// })
-
-// app.get('*', (request, response) => {
-//     try {
-//         response.sendFile(path.join(__dirname+'/client/build/index.html'));
-//     } catch (error) {console.error("No path", error)}
-// })
 
 app.listen(port, () => {
     console.log(`Listening on ${port}`)
