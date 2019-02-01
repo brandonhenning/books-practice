@@ -13,7 +13,7 @@ async function addBook (title, author, datepublished, pages, imgurl, collectioni
     try {
         await pool.query(`INSERT INTO books(title, author, datepublished, pages, imgurl, collectionid) VALUES ('${title}', '${author}', '${datepublished}', '${pages}', '${imgurl}', '${collectionid}');`)
         log(`Added ${title} to collection.`)
-    } catch (error) { log('Error creating user in database', error) }
+    } catch (error) { log('Error adding book to database', error) }
 }
 
 async function getBooksFromCollection (id) {
