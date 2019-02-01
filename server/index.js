@@ -72,7 +72,16 @@ app.get('/:collectionID', async (request, response) => {
         } else {
             return response.json({ mgs: `No books found in collection for ID# ${collectionID}.` })
         }
-    } catch (error) {log('Error retrieving bookc collection', error)}
+    } catch (error) { log('Error retrieving bookc collection', error) }
+})
+
+// Route to add book to database
+app.post('/add-book/:title/:author/:datepublished/:pages/:imgurl/:collectionID', async (request, response) => {
+    const { title, author, datepublished, pages, imgurl, collectionID } = request.params
+    try {
+        await db.addBook(title, author, datepublished, pages, imgurl, collectionID)
+        return response.json({ msg: 'Book successfully added to database.' })
+    } catch (error) { log('Error adding book to database', error) }
 })
 
 
